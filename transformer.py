@@ -11,13 +11,20 @@ def clean_dataframe(df: pd.DataFrame, col_mapping: Dict[str, str]) -> pd.DataFra
     df = df.iloc[2:].reset_index(drop=True)
 
      # Step 2: Enforce datatypes using COLUMN_TYPE_MAPPING
+    # Step 2: Enforce datatypes using COLUMN_TYPE_MAPPING
     for col, dtype in COLUMN_TYPE_MAPPING.items():
         if col in df.columns:
             try:
                 if "datetime" in str(dtype):
                     df[col] = pd.to_datetime(df[col], errors="coerce")
+
+                elif dtype == "Int64":
+                    df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
+                elif dtype == str:
+                    df[col] = df[col].astype(str)
                 else:
                     df[col] = df[col].astype(dtype)
+
             except Exception as e:
                 print(f"⚠️ Failed to cast column '{col}' to {dtype}: {e}")
 

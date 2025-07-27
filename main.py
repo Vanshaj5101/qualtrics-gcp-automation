@@ -5,7 +5,6 @@ from column_mapping import COLUMN_MAPPING
 from logger import setup_logger
 from bigquery_uploader import upload_to_bigquery
 from datetime import datetime
-import os
 
 log = setup_logger()
 
@@ -19,6 +18,7 @@ def run_pipeline():
         log.info("✅ DataFrame ready.")
         log.info(final_df.head())
         log.info(f"Shape: {final_df.shape}")
+        log.info(final_df.info())
         return final_df
     except Exception as e:
         log.error(f"❌ Pipeline failed: {e}")
@@ -35,19 +35,11 @@ if __name__ == "__main__":
     # df.to_csv(csv_path, index=False)
     # log.info(f"📁 Data exported to CSV: {csv_path}")
 
-    # df = df.astype(str)
 
-    # for col in df.columns:
-    #     if df[col].dtype == "object":
-    #         types = df[col].map(type).unique()
-    #         if len(types) > 1:
-    #             print(f"⚠️ Mixed types in column '{col}': {types}")
-
-
-    # upload_to_bigquery(
-    #     df,
-    #     project_id="qualtrics-data-pipeline",
-    #     dataset_id="qualtrics_data",
-    #     table_id="end_of_course_survey_responses",
-    #     credentials_path="qualtrics-data-uploader-key.json"  # You’ll generate this in GCP setup
-    # )
+    upload_to_bigquery(
+        df,
+        project_id="qualtrics-data-pipeline",
+        dataset_id="qualtrics_data",
+        table_id="end_of_course_survey_responses",
+        credentials_path="qualtrics-data-uploader-key.json"  # You’ll generate this in GCP setup
+    )

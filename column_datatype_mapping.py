@@ -3,7 +3,7 @@ from typing import Dict, Any
 COLUMN_TYPE_MAPPING: Dict[str, Any] = {
     "start_date": "datetime64[ns]",
     "end_date": "datetime64[ns]",
-    "response_status": str,
+    "response_status": "Int64",
     "ip_address": str,
     "progress_percent": "Int64",
     "duration_seconds": "Int64",
